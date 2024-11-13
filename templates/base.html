@@ -1,0 +1,17 @@
+<!-- templates/base.html -->
+{% load static %}
+<!DOCTYPE html>
+<html>
+<link rel="stylesheet" href="{% static 'main.css' %}">
+
+<head>
+  <meta charset="utf-8">
+  <title>Insighter - {% block title %} {% endblock %}</title>
+</head>
+<body>
+  <main>
+    {% block content %}
+    {% endblock %}
+  </main>
+</body>
+</html>
