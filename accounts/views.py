@@ -7,7 +7,7 @@ from django.http import HttpResponse
 from .forms import CustomUserCreationForm
 
 # From our algorithms
-import algorithms.stock_graph as graphing 
+from .algorithms import stock_graph as graphing 
 
 class SignUpView(CreateView):
     form_class = CustomUserCreationForm
@@ -15,10 +15,10 @@ class SignUpView(CreateView):
     template_name = "registration/signup.html"
 
 
-def viewStocks(request):
+def viewStocks(request, ticker):
     template = loader.get_template("view_stock.html")
     # Template context date
-    graph = graphing.createStockGraph(request.ticker)
+    graph = graphing.createStockGraph(ticker, 1)
     context: dict = {'title':    'View Stock',
                     'bar_plot': graph}
 

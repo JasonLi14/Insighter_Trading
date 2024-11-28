@@ -4,7 +4,7 @@ import  plotly.graph_objs   as      go
 import  pandas              as      pd
 
 # My own libraries
-import get_data 
+from . import get_data 
 
 def createStockGraph(ticker: str, period: int) -> str:
     stock_data = get_data.getHistory(ticker, period) 
@@ -16,7 +16,6 @@ def createStockGraph(ticker: str, period: int) -> str:
     bar_plot = px.line(stock_data, labels=labels, title=ticker)
     bar_plot.update_traces(line_color='Green')
     bar_plot.update_layout(showlegend=False)
-    bar_plot.show()
 
     # Embed the plot in an HTML div tag
     bar_plot_div: str = plot(bar_plot, output_type="div")
