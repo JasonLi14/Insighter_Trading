@@ -1,19 +1,27 @@
 import  plotly.express      as      px
 from    plotly.offline      import  plot
 import  plotly.graph_objs   as      go
+import  pandas              as      pd
 
-def createGraph() -> str: 
-    # Bar plot X axis values
-    x_values = ["Sample 1", "Sample 2", "Sample 3"]
+# My own libraries
+import get_data 
 
-    # Bar plot Y axis values
-    y_values = [1, 3, 2]
-
+def createStockGraph(ticker: str, period: int) -> str:
+    stock_data = get_data.getHistory(ticker, period) 
     # Create the plot
-    bar_plot = go.Figure([go.Bar(x=x_values,
-                                 y=y_values,
-                                 textposition="auto")]) 
+    labels = {
+        "value": "Close Price",
+        "Date": "Date and Time"
+    }
+    bar_plot = px.line(stock_data, labels=labels, title=ticker)
+    bar_plot.update_traces(line_color='Green')
+    bar_plot.update_layout(showlegend=False)
+    bar_plot.show()
 
     # Embed the plot in an HTML div tag
     bar_plot_div: str = plot(bar_plot, output_type="div")
     return bar_plot_div
+
+
+if __name__ == "__main__":
+    createStockGraph("AAPL", 3)

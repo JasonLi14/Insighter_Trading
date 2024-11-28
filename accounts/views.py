@@ -18,7 +18,7 @@ class SignUpView(CreateView):
 def viewStocks(request):
     template = loader.get_template("view_stock.html")
     # Template context date
-    graph = graphing.createGraph()
+    graph = graphing.createStockGraph(request.ticker)
     context: dict = {'title':    'View Stock',
                     'bar_plot': graph}
 
