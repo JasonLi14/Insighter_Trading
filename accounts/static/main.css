@@ -1,4 +1,31 @@
 body {
-    background-color: lightblue;
+    background-color: #fff9f8;
     font-family: verdana;
   }
+
+.footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: #272c26;
+  color: white;
+  text-align: center;
+}
+
+.graph_container {
+  background-color: #c38e6f;
+  padding: 1%;
+  width: 70%;
+  margin: 1%;
+  float:left; 
+  border-radius: 15px;
+}
+
+.predictions_bar {
+  background-color: #c38e6f;
+  padding: 1%;
+  width: 25%;
+  margin: 1%;
+  float:right; 
+}
