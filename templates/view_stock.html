@@ -4,8 +4,63 @@
 
 {% block content %}
 
-<div class="graph_container">
-  {{bar_plot|safe}}  <!--We need the safe to make the plot visible-->
+<div class="graph_container"> 
+  <a class="back_button" href="#">Back</a>
+  <br>
+  <div class="graph">
+    {{bar_plot|safe}}  <!--We need the safe to make the plot visible-->
+  </div>
+
+  <div class="stock_info">  <!--This holds various data for the stock-->
+    <table>
+      <tr>
+        <td>Last Price: </td>
+        <td>{{ stock_info.lastPrice }}</td>
+      </tr>
+      <tr>
+        <td>Previous Close: </td>
+        <td>{{ stock_info.previousClose }}</td>
+      </tr>
+      <tr>
+        <td>Open: </td>
+        <td>{{ stock_info.open }}</td>
+      </tr>
+      <tr>
+        <td>Year High: </td>
+        <td>{{ stock_info.yearHigh }}</td>
+      </tr>
+      <tr>
+        <td>Year Low: </td>
+        <td>{{ stock_info.yearLow }}</td>
+      </tr>
+      <tr>
+        <td>Last Volume: </td>
+        <td>{{ stock_info.lastVolume }}</td>
+      </tr>
+      <tr>
+        <td>Year High: </td>
+        <td>{{ stock_info.yearHigh }}</td>
+      </tr>
+      <tr>
+        <td>Year Low: </td>
+        <td>{{ stock_info.yearLow }}</td>
+      </tr>
+      <tr>
+        <td>Year Change: </td>
+        <td>{{ stock_info.yearChange }}</td>
+      </tr>
+      <tr>
+        <td>Currency: </td>
+        <td>{{ stock_info.currency }}</td>
+      </tr>
+    </table>
+  </div>
+
+  <!--View past predictions-->
+  <br> 
+  <!--Change Date Range-->
+  <!--Predictions data-->
+
 </div>
 
 {% include "predictions.html" %}

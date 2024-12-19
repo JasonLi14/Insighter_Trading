@@ -7,12 +7,14 @@ import  pandas              as      pd
 from . import get_data 
 
 def createStockGraph(ticker: str, period: int) -> str:
-    stock_data, company_name = get_data.getHistory(ticker, period) 
+    stock_data, company_name, fast_info = get_data.getHistory(ticker, period) 
     # Create the plot
     labels = {
         "value": "Close Price",
         "Date": "Date and Time"
     }
+
+    # Figure out some
     
     bar_plot = px.line(stock_data, labels=labels, title=f"{ticker} <br><sup>{company_name}</sup>")
 
@@ -23,10 +25,9 @@ def createStockGraph(ticker: str, period: int) -> str:
     bar_plot.update_traces(line_color='#065143')
     bar_plot.update_layout(showlegend=False)
 
-
     # Embed the plot in an HTML div tag
-    bar_plot_div: str = plot(bar_plot, output_type="div", config = {'staticPlot': True})
-    return bar_plot_div
+    bar_plot_div: str = plot(bar_plot, output_type="div", config = {'staticPlot': True, 'responsive': True})
+    return bar_plot_div, fast_info
 
 
 if __name__ == "__main__":

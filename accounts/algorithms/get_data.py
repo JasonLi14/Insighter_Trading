@@ -23,10 +23,10 @@ def getHistory(ticker: str, period: int = 3) -> pd.DataFrame:
 
     ticker_obj = yf.Ticker(ticker)
     company_name = ticker_obj.get_info()['longName']
-    print(company_name)
+    fast_info = ticker_obj.get_fast_info()
     history = ticker_obj.history(period=time, interval=interval)["Close"]
     history = history.tz_convert(None)
-    return history, company_name
+    return history, company_name, fast_info
 
 
 def getStats(ticker: str) -> pd.DataFrame:

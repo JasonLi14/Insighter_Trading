@@ -22,10 +22,36 @@ body {
   border-radius: 15px;
 }
 
+.graph {
+  background-color: #4a4644;
+  width: 65%;
+  display: inline-block;
+}
+
+.stock_info {
+  display: inline-block;
+  width: 30%;
+  vertical-align: top;
+}
+
 .predictions_bar {
   background-color: #c38e6f;
   padding: 1%;
   width: 25%;
   margin: 1%;
   float:right; 
+  border-radius: 15px;
+}
+
+.back_button {  /*The button for going back*/
+  background-color: #bed784;
+  border: none;
+  color: white;
+  padding: 0.5% 2%;
+  margin: 1% 0%;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  border-radius: 3px;
 }
