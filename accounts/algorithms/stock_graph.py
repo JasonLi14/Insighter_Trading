@@ -20,7 +20,7 @@ def createStockGraph(ticker: str, period: int) -> str:
 
     bar_plot.update_layout({
         'plot_bgcolor': 'rgba(0, 0, 0, 0)',
-        'paper_bgcolor': 'rgba(254, 253, 250)',
+        'paper_bgcolor': '#fff9f8',
     })
     bar_plot.update_traces(line_color='#065143')
     bar_plot.update_layout(showlegend=False)
