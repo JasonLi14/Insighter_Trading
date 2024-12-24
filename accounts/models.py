@@ -8,3 +8,12 @@ class CustomUser(AbstractUser):
 
     def __str__(self):
         return self.username
+    
+
+class allPredictions(models.Model):
+    user = models.CharField(max_length=50)
+    ticker = models.CharField(max_length=10)
+    predict_date = models.DateField()
+    end_date = models.DateField()
+    change = models.DecimalField(max_digits=6, decimal_places=3)
+
