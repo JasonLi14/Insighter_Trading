@@ -7,69 +7,93 @@
 <div class="graph_container"> 
   <a class="basic_button" href="#">Back</a>
   <br>
-  <div class="graph">
-    {{bar_plot|safe}}  <!--We need the safe to make the plot visible-->
-  </div>
-
-  <div class="stock_r_col">
-    <div class="stock_info">  <!--This holds various data for the stock-->
-      <table>
-        <tr>
-          <td>Last Price: </td>
-          <td>{{ stock_info.lastPrice }}</td>
-        </tr>
-        <tr>
-          <td>Previous Close: </td>
-          <td>{{ stock_info.previousClose }}</td>
-        </tr>
-        <tr>
-          <td>Open: </td>
-          <td>{{ stock_info.open }}</td>
-        </tr>
-        <tr>
-          <td>Year High: </td>
-          <td>{{ stock_info.yearHigh }}</td>
-        </tr>
-        <tr>
-          <td>Year Low: </td>
-          <td>{{ stock_info.yearLow }}</td>
-        </tr>
-        <tr>
-          <td>Last Volume: </td>
-          <td>{{ stock_info.lastVolume }}</td>
-        </tr>
-        <tr>
-          <td>Year High: </td>
-          <td>{{ stock_info.yearHigh }}</td>
-        </tr>
-        <tr>
-          <td>Year Low: </td>
-          <td>{{ stock_info.yearLow }}</td>
-        </tr>
-        <tr>
-          <td>Year Change: </td>
-          <td>{{ stock_info.yearChange }}</td>
-        </tr>
-        <tr>
-          <td>Currency: </td>
-          <td>{{ stock_info.currency }}</td>
-        </tr>
-      </table>
+  
+  <div>
+    <div class="graph" id="stock_graph">
+      {{bar_plot|safe}}  <!--We need the safe to make the plot visible-->
     </div>
-    <!--Change Date Range-->
-    <div class="dropdown">
-      <button class="basic_button" style="width: 100%; margin-bottom: 0%;">
-        Change Graph Date Range
-      </button>
-      <div class="dropdown-content">  <!--Drop down menu-->
-        <a href="{% url 'view_stock' ticker=ticker period=1 prediction_date=prediction_date%}">Day</a>
-        <a href="{% url 'view_stock' ticker=ticker period=2 prediction_date=prediction_date%}">Five Days</a>
-        <a href="{% url 'view_stock' ticker=ticker period=3 prediction_date=prediction_date%}">Month</a>
-        <a href="{% url 'view_stock' ticker=ticker period=4 prediction_date=prediction_date%}">Three Months</a>
-        <a href="{% url 'view_stock' ticker=ticker period=5 prediction_date=prediction_date%}">Six Months</a>
-        <a href="{% url 'view_stock' ticker=ticker period=6 prediction_date=prediction_date%}">Year</a>
+    
+
+    <div class="stock_r_col v_centered">
+      <div class="stock_info">  <!--This holds various data for the stock-->
+        <table>
+          <caption style="caption-side:top"><b>Information for {{ ticker }}</b></caption>
+          <tr>
+            <td>Last Price: </td>
+            <td>{{ stock_info.lastPrice }}</td>
+          </tr>
+          <tr>
+            <td>Previous Close: </td>
+            <td>{{ stock_info.previousClose }}</td>
+          </tr>
+          <tr>
+            <td>Open: </td>
+            <td>{{ stock_info.open }}</td>
+          </tr>
+          <tr>
+            <td>Day High: </td>
+            <td>{{ stock_info.dayHigh }}</td>
+          </tr>
+          <tr>
+            <td>Day Low: </td>
+            <td>{{ stock_info.dayLow }}</td>
+          </tr>
+          <tr>
+            <td>Last Volume: </td>
+            <td>{{ stock_info.lastVolume }}</td>
+          </tr>
+          <tr>
+            <td>Year High: </td>
+            <td>{{ stock_info.yearHigh }}</td>
+          </tr>
+          <tr>
+            <td>Year Low: </td>
+            <td>{{ stock_info.yearLow }}</td>
+          </tr>
+          <tr>
+            <td>Year Change: </td>
+            <td>{{ stock_info.yearChange }}</td>
+          </tr>
+          <tr>
+            <td>Currency: </td>
+            <td>{{ stock_info.currency }}</td>
+          </tr>
+        </table>
+      </div>
+      <!--Change Date Range-->
+      <div class="dropdown">
+        <button class="basic_button" style="width: 100%; margin-bottom: 0%;">
+          Change Graph Date Range
+        </button>
+        
+        <div class="dropdown-content">  <!-- Drop down menu -->
+          <button id="change_date_1">Day</button>
+          <button id="change_date_2">Five Days</button>
+          <button id="change_date_3">Month</button>
+          <button id="change_date_4">Three Months</button>
+          <button id="change_date_5">Six Months</button>
+          <button id="change_date_6">Year</button>
+        </div>
+        
       </div>
     </div>
+  </div>
+
+  <!--Change Prediction End Range-->
+  <div class="dropdown">
+    <button class="basic_button" style="width: 100%; margin-bottom: 0%;">
+      Change Graph Date Range
+    </button>
+    
+    <div class="dropdown-content">  <!-- Drop down menu -->
+      <button id="change_date_1">Day</button>
+      <button id="change_date_2">Five Days</button>
+      <button id="change_date_3">Month</button>
+      <button id="change_date_4">Three Months</button>
+      <button id="change_date_5">Six Months</button>
+      <button id="change_date_6">Year</button>
+    </div>
+    
   </div>
   {{ form }}
   
@@ -78,4 +102,30 @@
 <!--View past predictions-->
 {% include "predictions.html" %}
 
+{% endblock %}
+
+<!--Our event handler-->
+{% block javascript %}
+<script>
+  for (let i = 1; i <= 6; i++) {
+    $("#change_date_" + i).on("click", function() {
+      // alert("sigma");
+      
+      $.ajax(
+        {
+          url: '{% url "change_range" %}',
+          type: "GET",
+          dataType: "html",
+          data: {
+            'ticker': '{{ ticker }}',
+            'period': i,
+          },
+          success: function (result) {
+            $('#stock_graph').html(result)
+          }
+        }
+      )
+    });
+  }
+</script>
 {% endblock %}

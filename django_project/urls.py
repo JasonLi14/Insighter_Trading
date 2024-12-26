@@ -19,8 +19,14 @@ from django.urls import path, include
 from django.views.generic.base import TemplateView
 
 urlpatterns = [
+    # Index page
     path("", TemplateView.as_view(template_name="home.html"), name="home"),
+    # Admin site
     path("admin/", admin.site.urls),
+    # My pages
     path("accounts/", include("accounts.urls")),
+    # Login pages 
     path("accounts/", include("django.contrib.auth.urls")),
+    # Ajax functions
+    path("ajax/", include("accounts.ajax_urls"))
 ]

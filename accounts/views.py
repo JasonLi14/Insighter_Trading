@@ -10,6 +10,8 @@ from .forms import predictionForm  # Our prediction form to create predictions
 
 # From our algorithms
 from .algorithms import stock_graph as graphing 
+from .algorithms import utility
+
 
 
 class SignUpView(CreateView):
@@ -17,12 +19,11 @@ class SignUpView(CreateView):
     success_url = reverse_lazy("login")
     template_name = "registration/signup.html"
 
-
 @login_required(login_url='/accounts/login/')
-def viewStocks(request, ticker, period, prediction_date):  # To view and predict stocks    
+def viewStocks(request, ticker):  # To view and predict stocks    
     template = loader.get_template("view_stock.html")
     # Template context date
-    graph, stock_info = graphing.createStockGraph(ticker, period)
+    graph, stock_info = graphing.createStockGraph(ticker, 1)
     new_info = {}
 
     for info in stock_info:  # Round everything to two digits:
@@ -30,12 +31,15 @@ def viewStocks(request, ticker, period, prediction_date):  # To view and predict
         if type(stock_info[info]) == float:
             new_info[info] = '{:.2f}'.format(round(stock_info[info], 2))
 
+    # Find prediction dates
+    prediction_dates = utility.predictionDates()
+
     # Context for the view
     context: dict = {'title':    'View Stock',
                      'ticker': ticker,
                      'bar_plot': graph,
-                     'prediction_date': prediction_date,
-                     'stock_info': new_info}
+                     'stock_info': new_info,
+                     'pred_dates': prediction_dates}
     if request.method == "POST":  # Processing form
         form = predictionForm(request.POST)  # Fill the form with information from the post request
         # check if form is valid

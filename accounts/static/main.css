@@ -45,15 +45,13 @@ body {
 }
 
 .stock_r_col {
-  width: 32%;
+  width: 22%;
   margin: 0% 1.125%;
   display: inline-block;
-  vertical-align: top;
 }
 
 .stock_info {
   display: inline-block;
-  vertical-align: top;
   width: 100%;
   background-color: var(--bkg-color);
 }
@@ -121,7 +119,7 @@ body {
 
 /* Links inside the dropdown */
 
-.dropdown-content a {
+.dropdown-content button {
   color: black;
   padding: 0.75% 2%;
   text-decoration: none;
@@ -131,7 +129,7 @@ body {
 }
 
 /* Change color of dropdown links on hover */
-.dropdown-content a:hover {background-color: #ddd;}
+.dropdown-content button:hover {background-color: #ddd;}
 
 /* Show the dropdown menu on hover */
 .dropdown:hover .dropdown-content {display: block;}
