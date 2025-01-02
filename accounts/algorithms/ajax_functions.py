@@ -10,3 +10,4 @@ def newGraph(request: HttpRequest):
 
     graph, stock_info = graphing.createStockGraph(ticker, period)
     return HttpResponse(graph)
+

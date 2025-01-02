@@ -4,128 +4,179 @@
 
 {% block content %}
 
-<div class="graph_container"> 
-  <a class="basic_button" href="#">Back</a>
-  <br>
-  
-  <div>
-    <div class="graph" id="stock_graph">
-      {{bar_plot|safe}}  <!--We need the safe to make the plot visible-->
-    </div>
-    
+<div style="width: 100%">
+  <div class="col-9"> 
+    <div class="graph_container">
+      <a class="basic_button" href="#">Back</a>
+      <br>
+      <hr>
+      <h3>Stock Information</h3>
 
-    <div class="stock_r_col v_centered">
-      <div class="stock_info">  <!--This holds various data for the stock-->
-        <table>
-          <caption style="caption-side:top"><b>Information for {{ ticker }}</b></caption>
-          <tr>
-            <td>Last Price: </td>
-            <td>{{ stock_info.lastPrice }}</td>
-          </tr>
-          <tr>
-            <td>Previous Close: </td>
-            <td>{{ stock_info.previousClose }}</td>
-          </tr>
-          <tr>
-            <td>Open: </td>
-            <td>{{ stock_info.open }}</td>
-          </tr>
-          <tr>
-            <td>Day High: </td>
-            <td>{{ stock_info.dayHigh }}</td>
-          </tr>
-          <tr>
-            <td>Day Low: </td>
-            <td>{{ stock_info.dayLow }}</td>
-          </tr>
-          <tr>
-            <td>Last Volume: </td>
-            <td>{{ stock_info.lastVolume }}</td>
-          </tr>
-          <tr>
-            <td>Year High: </td>
-            <td>{{ stock_info.yearHigh }}</td>
-          </tr>
-          <tr>
-            <td>Year Low: </td>
-            <td>{{ stock_info.yearLow }}</td>
-          </tr>
-          <tr>
-            <td>Year Change: </td>
-            <td>{{ stock_info.yearChange }}</td>
-          </tr>
-          <tr>
-            <td>Currency: </td>
-            <td>{{ stock_info.currency }}</td>
-          </tr>
-        </table>
+      <!-- Graph and Stock Information-->
+      <div class="row">
+        
+        <div class="col-8" id="stock_graph">
+          {{bar_plot|safe}}  <!--We need the safe to make the plot visible-->
+        </div>
+
+        <div class="col-4 stock_r_col">
+          <!--This holds various data for the stock-->
+          <div class="stock_info">  
+            <table>
+              <caption style="caption-side:top"><b>Information for {{ ticker }}</b></caption>
+              <tr>
+                <td>Last Price: </td>
+                <td>{{ stock_info.lastPrice }}</td>
+              </tr>
+              <tr>
+                <td>Previous Close: </td>
+                <td>{{ stock_info.previousClose }}</td>
+              </tr>
+              <tr>
+                <td>Open: </td>
+                <td>{{ stock_info.open }}</td>
+              </tr>
+              <tr>
+                <td>Day High: </td>
+                <td>{{ stock_info.dayHigh }}</td>
+              </tr>
+              <tr>
+                <td>Day Low: </td>
+                <td>{{ stock_info.dayLow }}</td>
+              </tr>
+              <tr>
+                <td>Last Volume: </td>
+                <td>{{ stock_info.lastVolume }}</td>
+              </tr>
+              <tr>
+                <td>Year High: </td>
+                <td>{{ stock_info.yearHigh }}</td>
+              </tr>
+              <tr>
+                <td>Year Low: </td>
+                <td>{{ stock_info.yearLow }}</td>
+              </tr>
+              <tr>
+                <td>Year Change: </td>
+                <td>{{ stock_info.yearChange }}</td>
+              </tr>
+              <tr>
+                <td>Currency: </td>
+                <td>{{ stock_info.currency }}</td>
+              </tr>
+            </table>
+          </div>
+          <!--Change Date Range-->
+          <div class="dropdown">
+            <button class="basic_button" style="width: 100%;">
+              Change Graph Date Range
+            </button>
+            
+            <div class="dropdown-content">  <!-- Drop down menu -->
+              <button id="change_date_1">Day</button>
+              <button id="change_date_2">Five Days</button>
+              <button id="change_date_3">Month</button>
+              <button id="change_date_4">Three Months</button>
+              <button id="change_date_5">Six Months</button>
+              <button id="change_date_6">Year</button>
+            </div>
+            
+          </div>
+        </div>
       </div>
-      <!--Change Date Range-->
-      <div class="dropdown">
-        <button class="basic_button" style="width: 100%; margin-bottom: 0%;">
-          Change Graph Date Range
+
+      <hr>
+      <br>
+
+      <!--Change Prediction End Range-->
+      <h3>Prediction Data</h3>
+      
+      <div class="dropdown prediction_change">
+        <button class="basic_button" style="width: 100%; margin-bottom: 0%; ">
+          Change Prediction Date
         </button>
         
         <div class="dropdown-content">  <!-- Drop down menu -->
-          <button id="change_date_1">Day</button>
-          <button id="change_date_2">Five Days</button>
-          <button id="change_date_3">Month</button>
-          <button id="change_date_4">Three Months</button>
-          <button id="change_date_5">Six Months</button>
-          <button id="change_date_6">Year</button>
+          {% for date in pred_dates %}
+            <a href="{% url 'view_stock' ticker=ticker prediction=date %}">{{ date }}</a>
+          {% endfor %}
         </div>
-        
       </div>
+
+      <form action="" method="post">
+        {% csrf_token %}
+        <h4>Make a Prediction!</h4>
+        <p>
+          You must make a prediction for {{ chosen_date }} before accessing prediction data. 
+          <br>
+          How much do you predict the price of the stock will change?
+        </p>
+
+        <div class="range_field basic_button">
+          {{ form.change.subwidgets.0 }}
+          {{ form.change.subwidgets.1 }}
+        </div>
+        <p>Expected value of the stock: <b id="expected_value"><b></p>
+        <input class="basic_button" type="submit" value="Submit">
+      </form>
     </div>
   </div>
 
-  <!--Change Prediction End Range-->
-  <div class="dropdown">
-    <button class="basic_button" style="width: 100%; margin-bottom: 0%;">
-      Change Graph Date Range
-    </button>
-    
-    <div class="dropdown-content">  <!-- Drop down menu -->
-      <button id="change_date_1">Day</button>
-      <button id="change_date_2">Five Days</button>
-      <button id="change_date_3">Month</button>
-      <button id="change_date_4">Three Months</button>
-      <button id="change_date_5">Six Months</button>
-      <button id="change_date_6">Year</button>
-    </div>
-    
+  <!--View past predictions-->
+  <div class="col-3">
+    {% include "predictions.html" %}
   </div>
-  {{ form }}
-  
 </div>
-
-<!--View past predictions-->
-{% include "predictions.html" %}
 
 {% endblock %}
 
 <!--Our event handler-->
 {% block javascript %}
 <script>
+  // Updating the graph
   for (let i = 1; i <= 6; i++) {
-    $("#change_date_" + i).on("click", function() {
-      // alert("sigma");
-      
-      $.ajax(
-        {
-          url: '{% url "change_range" %}',
-          type: "GET",
-          dataType: "html",
-          data: {
-            'ticker': '{{ ticker }}',
-            'period': i,
-          },
-          success: function (result) {
-            $('#stock_graph').html(result)
-          }
+  $("#change_date_" + i).on("click", function() {   
+    $.ajax(  // create an ajax call
+      {
+        url: '{% url "change_range" %}',
+        type: "GET",
+        dataType: "html",
+        data: {
+          'ticker': '{{ ticker }}',
+          'period': i,
+        },
+        success: function (result) {
+          $('#stock_graph').html(result)
         }
-      )
-    });
+      }
+    )
+  });
   }
+
+  // slider
+  var slider = document.getElementById("prediction_slider");
+  var num_input = document.getElementById("prediction_number");
+  var expected_value = document.getElementById("expected_value")
+  num_input.innerHTML = slider.value; // Display the default slider value
+  expected_value.innerHTML = parseInt('{{ stock_info.lastPrice }}');
+
+  // Update the current slider value (each time you drag the slider handle)
+  slider.addEventListener('input', function (event) {
+    new_change = event.target.value;  // get the new change
+    num_input.value = new_change;  // make sure both elements display same thing
+    new_value = parseFloat('{{ stock_info.lastPrice }}') + parseFloat(new_change);
+    new_value = new_value.toFixed(2);
+    expected_value.innerHTML = new_value;
+    
+  });
+
+  num_input.addEventListener('input', function (event) {
+    new_change = event.target.value;  // get the new change
+    slider.value = event.target.value;  // make sure both elements display same thing
+    new_value = parseFloat('{{ stock_info.lastPrice }}') + parseFloat(new_change);
+    new_value = new_value.toFixed(2);
+    expected_value.innerHTML = new_value;
+  });
+
 </script>
 {% endblock %}

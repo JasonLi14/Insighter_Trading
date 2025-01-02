@@ -1,0 +1,205 @@
+/* --- VARIABLES --- */
+
+:root {
+  --bkg-color:#fff9f8;
+  --section-color:#ebb283;
+  --dark-color: #272c26;
+  --interact-color: #bed784;
+  --highlight-color: #065143;
+}
+
+/* --- COLUMNS LAYOUT --- */
+.col-1 {width: 8.33%;}
+.col-2 {width: 16.66%;}
+.col-3 {width: 25%;}
+.col-4 {width: 33.33%;}
+.col-5 {width: 41.66%;}
+.col-6 {width: 50%;}
+.col-7 {width: 58.33%;}
+.col-8 {width: 66.66%;}
+.col-9 {width: 75%;}
+.col-10 {width: 83.33%;}
+.col-11 {width: 91.66%;}
+.col-12 {width: 100%;}
+
+[class*="col-"] {
+  float: left;
+  padding: 15px;
+}
+
+.row::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+body {
+  background-color: var(--bkg-color);
+  font-family: verdana;
+  min-height: 100%;
+}
+
+.footer {
+  background-color: var(--dark-color);
+  color: white;
+  text-align: center;
+  left: 0;
+  width: 100%;
+  z-index: -1;
+  display: flex;
+  min-height: 10vh;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.graph_container {
+  background-color: var(--section-color);
+  border-radius: 15px;
+  padding: 15px;
+}
+
+.stock_r_col {
+  display: flex; 
+  flex-direction: column; 
+  justify-content: center;
+}
+
+.stock_info {
+  width: 100%;
+  background-color: var(--bkg-color);
+  margin-bottom: 7.5px;
+}
+
+.stock_info table {
+  table-layout: fixed;
+}
+
+.stock_info td {
+  padding: 1%;
+}
+
+.predictions_bar {
+  background-color: var(--section-color);
+  width: 100%;
+  border-radius: 15px;
+}
+
+.basic_button {
+  background-color: var(--interact-color);
+  border: none;
+  color: white;
+  padding: 5px 2%;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  border-radius: 10px;
+}
+
+.v_centered {  /* For vertically centering elements */
+  position: absolute;
+  align-items: center;
+  top: 50%;
+  transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+}
+
+/* --- DROPDOWN BUTTON --- */
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  z-index: 10;
+}
+
+.date_range_div {
+  display: inline-block;
+  vertical-align: top;
+  
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #eeeeee;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+/* Links inside the dropdown */
+
+.dropdown-content button, .dropdown-content a {
+  color: black;
+  padding: 0.75% 2%;
+  text-decoration: none;
+  display: block;
+  border: none;
+  width: 100%;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content button:hover, .dropdown-content a:hover {background-color: #ddd;}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {display: block;}
+
+/* Change the background color of the dropdown button when the dropdown content is shown */
+.dropdown:hover .dropbtn {background-color: #3e8e41;}
+
+/* --- FOR CREATING PREDICTIONS --- */
+.prediction_change {
+  width: 30%;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* --- Slider/Form Input --- */
+.range_field {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+#prediction_number {
+  border: 0;
+  width: 15%;
+  background-color: var(--bkg-color);
+  padding: 3px;
+}
+
+#prediction_slider {
+  border: 0;
+  width: 75%;
+}
+
+.slider {
+  appearance: none;  /* Override default CSS styles */
+  height: 15px;
+  border-radius: 5px;  
+  background-color: var(--highlight-color);
+  outline: none;
+}
+
+.slider::-webkit-slider-thumb {
+  appearance: none;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%; 
+  border: 3px solid  var(--bkg-color);
+  background: var(--interact-color);
+  cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+  appearance: none;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: var(--interact-color);
+  cursor: pointer;
+}
