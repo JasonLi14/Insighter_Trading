@@ -5,12 +5,21 @@
 
 {% block content %}
 {% if user.is_authenticated %}
-  Hi {{ user.username }}!
-  <a href="{% url 'view_stock' ticker='TSLA' prediction='0' %}"">View Tesla</a>
-  <form action="{% url 'logout' %}" method="post">
-    {% csrf_token %}
-    <button type="submit">Log Out</button>
-  </form>
+  <div style="width: 100%">
+    <div class="col-9">
+      <div class="generic_container">
+        Hi {{ user.username }}!
+        <a href="{% url 'view_stock' ticker='TSLA' prediction=0 %}"">View Tesla</a>
+        <form action="{% url 'logout' %}" method="post">
+          {% csrf_token %}
+          <button type="submit" class="basic_button">Log Out</button>
+        </form>
+      </div>
+    </div>
+    <div class="col-3">
+      {% include "predictions.html" %}
+    </div>
+  </div>
 {% else %}
   <p>You are not logged in</p>
   <a href="{% url 'login' %}">Log In</a> |

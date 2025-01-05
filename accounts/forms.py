@@ -56,3 +56,9 @@ class predictionForm(forms.Form):
         super().__init__(*args, **kwargs)
         self.fields['change'] = forms.FloatField(widget=rangeInputWidget(attrs=attrs))
         
+
+class searchForm(forms.Form):
+    prompt = forms.CharField(label='', 
+                             max_length=100, 
+                             widget=forms.TextInput(
+                                attrs={"class": "search_input", "name": "search", "placeholder": "TSLA"}),)

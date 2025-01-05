@@ -10,6 +10,7 @@ integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jI
 <head>
   <meta charset="utf-8">
   <title>Insighter - {% block title %} {% endblock %}</title>
+  <link rel="icon" href="{% static 'images/favicon.ico' %}">
 </head>
 <body>
   <!-- =========== NAVBAR =========== -->
@@ -18,7 +19,7 @@ integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jI
         <div id="logo">Insighter Trading</div>
         <nav>
             <ul class="nav-links">
-                <li><a href="#">Predict</a></li>
+                <li><a href="{% url 'predict' page_number=1 search='search=' %}">Predict</a></li>
                 <li><a href="{% url 'home' %}">Profile</a></li>
             </ul>
         </nav>

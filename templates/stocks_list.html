@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block title %}Predict Stocks{% endblock %}
+
+{% block content %}
+<!--View past predictions-->
+<div style="width: 100%">
+    <div class="col-9">
+        <div class="generic_container">
+            <h3>List of Stocks</h3>
+            <!-- search bar -->
+            <form action="" method="post">
+                <div class="basic_button search_bar h_centered">
+                    {% csrf_token %}
+                    <label for="prompt">Search: </label>
+                    {{ search_form.prompt }}
+                    <input type="submit" value="Go">
+                </div>
+            </form>
+
+            <br>
+            
+            {% if prompt_partial %}
+            
+            <br>
+            <h3>Search results for {{prompt_partial}}:</h3>
+            <a class="basic_button" href="{% url 'predict' page_number=1 search='search=' %}">Reset Search</a>
+            <br>
+            <br>
+
+            {% endif %}
+
+            {% if page_object %}
+                {% for stock in page_object %}
+                <a class="basic_button stock_entry" href="{% url 'view_stock' ticker=stock.ticker prediction=0 %}">
+                    <p>
+                        <span style="float:left;">
+                            <b>{{ stock.ticker }}</b> - {{ stock.name }} 
+                        </span>  
+                        <span style="float:right;">
+                            Exchange: {{ stock.exchange }}
+                        </span>  
+                    </p>
+                </a>
+                {% endfor %}
+            {% else %}
+            <p>It seems like nothing matched your query. Try again with a different search.</p>
+            {% endif %}
+            <br>
+            <br>
+            <div class="step_links_container">
+                <span class="step_links">
+                    {% if page_object.has_previous %}
+                        <a class="basic_button" href="{% url 'predict' page_number='1' search=prompt %}">&laquo; First</a>
+                        <a class="basic_button" href="{% url 'predict' page_number=page_object.previous_page_number search=prompt %}">Previous</a>
+                    {% endif %}
+            
+                    <span class="">
+                        Page {{ page_object.number }} of {{ page_object.paginator.num_pages }}.
+                    </span>
+            
+                    {% if page_object.has_next %}
+                        <a class="basic_button" href="{% url 'predict' page_number=page_object.next_page_number search=prompt %}">Next</a>
+                        <a class="basic_button" href="{% url 'predict' page_number=page_object.paginator.num_pages search=prompt %}">Last &raquo;</a>
+                    {% endif %}
+                </span>
+            </div>
+
+        </div>
+        <!-- Links to other pages -->
+    </div>
+    <div class="col-3">
+        {% include "predictions.html" %}
+    </div>
+</div>
+{% endblock %}

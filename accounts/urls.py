@@ -7,4 +7,5 @@ urlpatterns = [
     path("signup/", views.SignUpView.as_view(), name="signup"),
     path("view_stock/<str:ticker>/<str:prediction>", views.viewStocks, name="view_stock"),
     path("home", views.home, name="home"),
+    path("predict/<int:page_number>/<str:search>", views.stocksList, name="predict"),
 ]

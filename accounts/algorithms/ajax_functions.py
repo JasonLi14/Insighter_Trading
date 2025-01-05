@@ -1,6 +1,7 @@
 # This page is for creating functions that will be accessed by jquery
 from django.http import HttpRequest  # For datatyping
 from django.http import HttpResponse  # For datatyping
+from django.core.paginator import Paginator
 
 from . import stock_graph as graphing 
 
@@ -10,4 +11,3 @@ def newGraph(request: HttpRequest):
 
     graph, stock_info = graphing.createStockGraph(ticker, period)
     return HttpResponse(graph)
-

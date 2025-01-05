@@ -1,10 +1,28 @@
 
 
-<div class="predictions_bar">
-<p>View your predictions so far: </p>
+<div class="predictions_bar generic_container">
+    <h3>Past Predictions</h3>
+    {% if predictions_list %}
+        <p>View your predictions so far: </p>
 
-{% for prediction in predictions_list %}
-<li>prediction</li>
-{% endfor %}
+        <table>
+            <tr>
+                <th>Stock</th>
+                <th>End Value</th>
+                <th>End Date</th>
+            </tr>
+            {% for prediction in predictions_list %}
+            <tr>
+                <td>{{ prediction.ticker }}</td>
+                <td>{{ prediction.end_value }}</td>
+                <td>{{ prediction.end_date }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        <br>
+        <a href="" class="basic_button">Past Predictions</a>
+    {% else %}
+        <p>You have not made a prediction yet. Try getting started! </p>
+    {% endif %}
 
 <div>

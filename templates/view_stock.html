@@ -4,12 +4,23 @@
 
 {% block content %}
 
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <p {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+    {% endfor %}
+</ul>
+{% endif %}
+
 <div style="width: 100%">
   <div class="col-9"> 
-    <div class="graph_container">
-      <a class="basic_button" href="#">Back</a>
+    <div class="generic_container">
+      <a class="basic_button" href="{% url 'predict' page_number=1 search='search=' %}">Back</a>
+
+      {% if success %}
       <br>
       <hr>
+      
       <h3>Stock Information</h3>
 
       <!-- Graph and Stock Information-->
@@ -116,9 +127,13 @@
           {{ form.change.subwidgets.0 }}
           {{ form.change.subwidgets.1 }}
         </div>
-        <p>Expected value of the stock: <b id="expected_value"><b></p>
+        <p>Expected value of the stock: <b id="expected_value"></b></p>
         <input class="basic_button" type="submit" value="Submit">
       </form>
+
+      {% else %}
+      <p>Hmm... It seems that we cannot fetch data for this stock. Apologies for the inconvenience. </p>
+      {% endif %}
     </div>
   </div>
 
@@ -158,7 +173,7 @@
   var num_input = document.getElementById("prediction_number");
   var expected_value = document.getElementById("expected_value")
   num_input.innerHTML = slider.value; // Display the default slider value
-  expected_value.innerHTML = parseInt('{{ stock_info.lastPrice }}');
+  expected_value.innerHTML = parseFloat('{{ stock_info.lastPrice }}');
 
   // Update the current slider value (each time you drag the slider handle)
   slider.addEventListener('input', function (event) {

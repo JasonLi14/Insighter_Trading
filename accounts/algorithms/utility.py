@@ -1,5 +1,5 @@
 from datetime import date, timedelta
-
+import csv
 
 # Finds the dates that users can set predictions on
 # This is mainly to ensure that there are enough predictions per date
@@ -26,4 +26,18 @@ def roundDict(old_dict:dict, digits:int=2):
         new_dict[info] = old_dict[info]
         if type(old_dict[info]) == float:
             new_dict[info] = '{:.2f}'.format(round(old_dict[info], digits))
+    return new_dict
 
+
+# For getting all the possible stocks
+def stocksFromCsv(csv_file_path="accounts/static/stock_info.csv"):
+    stocks_list = []
+    with open(csv_file_path, 'r', newline='') as csv_file:
+        stocks_csv = csv.reader(csv_file)
+        for row in stocks_csv:
+            stocks_list.append(row)
+    return stocks_list
+
+
+if __name__ == "__main__":
+    stocksFromCsv()

@@ -33,10 +33,13 @@
   display: table;
 }
 
+html {
+  font-family: verdana;
+  font-size: 16px;
+}
+
 body {
   background-color: var(--bkg-color);
-  font-family: verdana;
-  min-height: 100%;
 }
 
 .footer {
@@ -52,11 +55,14 @@ body {
   justify-content: space-between;
 }
 
-.graph_container {
-  background-color: var(--section-color);
+/* Regular Container */
+.generic_container {
   border-radius: 15px;
+  background-color: var(--section-color);
   padding: 15px;
 }
+
+/* View Stock */
 
 .stock_r_col {
   display: flex; 
@@ -72,16 +78,31 @@ body {
 
 .stock_info table {
   table-layout: fixed;
+  width: 100%;
 }
 
 .stock_info td {
   padding: 1%;
 }
 
+/* Predictions Bar */
 .predictions_bar {
-  background-color: var(--section-color);
   width: 100%;
   border-radius: 15px;
+  padding: 15px;
+}
+
+.predictions_bar table {
+  table-layout: auto;
+  width: 100%;
+}
+
+tr:hover {
+  box-shadow: 0 0 15px var(--highlight-color);
+}
+
+.predictions_bar td {
+  padding: 1%;
 }
 
 .basic_button {
@@ -96,12 +117,22 @@ body {
   border-radius: 10px;
 }
 
+.basic_button:hover {
+  box-shadow: 0 0 15px var(--highlight-color);
+  color: white;
+}
+
 .v_centered {  /* For vertically centering elements */
   position: absolute;
   align-items: center;
   top: 50%;
   transform: translateY(-50%);
   -ms-transform: translateY(-50%);
+}
+
+.h_centered {
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /* --- DROPDOWN BUTTON --- */
@@ -202,4 +233,43 @@ body {
   border-radius: 50%;
   background: var(--interact-color);
   cursor: pointer;
+}
+
+/* Stocks List */
+.stock_entry {
+  width: 100%;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.step_links_container {
+  text-align: center;
+}
+
+.step_links {
+  display: inline-block;
+  width: 100%;
+}
+
+/* Search Bar */
+.search_bar {
+  width: 80%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.search_input {
+  width: 75%;
+  border: 0;
+  background-color: var(--bkg-color);
+  padding: 3px;
+}
+
+.search_bar input[type="submit"] {
+  border: 2px solid var(--bkg-color);  
+  padding: 2px 10px;
+  border-radius: 10px;
+  color: white;
+  background-color: var(--highlight-color);
 }

@@ -1,6 +1,7 @@
 import yfinance as yf
 import pandas as pd
 
+from accounts.models import stocks
 
 def getHistory(ticker: str, period: int = 3) -> pd.DataFrame:
     # Convert int to a period
@@ -22,7 +23,7 @@ def getHistory(ticker: str, period: int = 3) -> pd.DataFrame:
             time = "1y"
 
     ticker_obj = yf.Ticker(ticker)
-    company_name = ticker_obj.get_info()['longName']
+    company_name = stocks.objects.filter(ticker=ticker).values()[0]["name"]
     fast_info = ticker_obj.get_fast_info()
     history = ticker_obj.history(period=time, interval=interval)["Close"]
     history = history.tz_convert(None)
