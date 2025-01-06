@@ -8,7 +8,7 @@ def predictionDates(current_date:date=date.today()):
     tomorrow = current_date + timedelta(1)
     # End of Week
     start = current_date - timedelta(days=current_date.weekday())
-    week_end = start + timedelta(days=6)  # 6 for saturday
+    week_end = start + timedelta(days=6)  # 6 for sunday
     # Last day of month
     month_end = date(current_date.year + current_date.month // 12, current_date.month % 12 + 1, 1)
     # Last day of year
@@ -16,6 +16,12 @@ def predictionDates(current_date:date=date.today()):
     dates =  [tomorrow, week_end, month_end, year_end]
     dates = list(set(dates))
     dates.sort()  # Sort the dates
+
+    # Ensure all the dates are not the same date as today
+    for i in range(len(dates) - 1, -1, -1):
+        if dates[i] == current_date:
+            dates.pop(i)
+            
     return dates
 
 

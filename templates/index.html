@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+<!-- This is the default page to welcome users. -->
+
+{% block title %}Welcome{% endblock %}
+
+{% block content %}
+
+<div width="100%">
+    <div class="col-12">
+        <h1>Insighter Trading</h1>
+        <h2>About</h2>
+        <p>Insighter Trading is a web application that allows users to cast predictions on the movement of stocks. 
+            It will then perform some data analytics on it. For example, it allows users to gauge the general sentiment
+            of the stock movement by seeing what other users voted, and adjust it based on past performance. It can 
+            also track user performance and create an accuracy score, or how accurate the user tends to be. 
+        </p>
+        <h2>Methodology</h2>
+        <h3>Summary</h3>
+        <p>When a user casts a prediction, Insighter keeps track of when the prediction was cast and when the prediction 
+            expires. Insighter measures how close the prediction is to the final value. If the prediction is within 5%,
+            the user is awarded a positive score; otherwise, the user gets a negative score. Insighter also provides a 
+            time bonus based on the number of days between the date the prediction was cast and the date the prediction
+            is for. To calculate the user's accuracy, Insighter takes the average of the scores of all previous predictions.
+            <br><br>
+            Insighter will also display some of its own metrics. The Insighter Score is a weighted average of the 
+            current predictions using each player's accuracy. 
+        </p>
+        <h3>Calculating Score</h3>
+        <p>Score is calculated with the following formula: 
+            <br>
+            The score is:
+            <br>
+            $$ {\ln(\frac{0.005 \times \sqrt{d} \times a }{|p - a| + 0.1})}  $$
+            <br>
+            Where p is the predicted value, a is the actual value, and d is the number of days the prediction was active.
+        </p>
+        <h3>The Insighter Score</h3>
+        The formula for the Insighter score is:
+            $$ {\frac{a_1p_1 + a_2p_2 + a_3p_3 + ... + a_np_n }{|a_1| + |a_2| + |a_3| + ... + |a_n| + 1 }} $$
+            <br>
+            Where a<sub>i</sub> and p<sub>i</sub>  is user i's accuracy and predicted value, respectively.
+        
+        <div class="generic_container h_centered" style="width: 50%; text-align: center;">
+            <h2>Get Started</h2>
+            <a class="basic_button" href="accounts/login">Login</a> &emsp; <a class="basic_button" href="accounts/signup">Signup</a>
+        </div>
+        
+    </div>
+</div>
+{% endblock %}

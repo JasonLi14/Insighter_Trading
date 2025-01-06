@@ -66,16 +66,31 @@ def viewStocks(request: HttpRequest, ticker, prediction):  # To view and predict
     except KeyError:
         print("YFinance could not get the info for", ticker)
         return HttpResponse(template.render(fail_context, request))
-    
+
     # Make a new_info dictionary
     new_info = utility.roundDict(stock_info, 2)
 
     # Find prediction dates
     prediction_dates = utility.predictionDates()
 
+    # Find prediction dates string
+    possible_dates = []
+    for date in prediction_dates:
+        possible_dates.append(date.strftime("%Y-%m-%d"))
+
     # Default prediction date
     if prediction == "0":
         prediction = prediction_dates[0]
+    elif prediction not in possible_dates:
+        # user entered their own prediction date
+        return HttpResponseRedirect("0")
+
+    # Make a distribution graph
+    # Change prediction values to floats
+    prediction_values = []
+    for value in allPredictions.objects.filter(ticker=ticker, end_date=prediction).values_list('end_value'):
+        prediction_values.append(float(value[0]))
+    distr_graph = graphing.createDistrGraph(prediction_values)
 
     # Set the maximum of the range to be dynamic
     range_change = round(float(new_info["lastPrice"]) * 0.2 * 4) / 4
@@ -90,6 +105,7 @@ def viewStocks(request: HttpRequest, ticker, prediction):  # To view and predict
                      'success': True,
                      'ticker': ticker,
                      'bar_plot': graph,
+                     'distribution_plot': distr_graph,
                      'stock_info': new_info,
                      'pred_dates': prediction_dates,
                      'chosen_date': prediction,
@@ -107,7 +123,7 @@ def viewStocks(request: HttpRequest, ticker, prediction):  # To view and predict
                 # Get the user
                 prediction_user = request.user
                 # Get the ticker
-                prediction_ticker = ticker
+                prediction_ticker = stocks.objects.filter(ticker=ticker)[0]
                 # Get the end date of the prediction
                 prediction_end_date = prediction
                 # Get the current date
@@ -123,7 +139,6 @@ def viewStocks(request: HttpRequest, ticker, prediction):  # To view and predict
                 new_prediction.save()
             except IntegrityError:
                 messages.warning(request, "You cannot make duplicate predictions. ")
-                print("Something bad happened")
             return HttpResponseRedirect(request.path_info)
     else:
         form = predictionForm(attrs=form_attrs, auto_id=False)  
@@ -161,10 +176,10 @@ def stocksList(request, page_number:int, search:str="search="):
 
         # Get the  context
         context = {'predictions_list': queries.userPredictions(request.user),
-                'page_object': page_obj,
-                'show_back': False,
-                'prompt': search,
-                'prompt_partial': search_query,  
-                'search_form': searchForm}
+                   'page_object': page_obj,
+                   'show_back': False,
+                   'prompt': search,
+                   'prompt_partial': search_query,  
+                   'search_form': searchForm}
 
         return HttpResponse(template.render(context, request))
