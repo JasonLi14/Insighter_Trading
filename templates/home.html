@@ -8,12 +8,31 @@
   <div style="width: 100%">
     <div class="col-9">
       <div class="generic_container">
-        Hi {{ user.username }}!
-        <a href="{% url 'view_stock' ticker='TSLA' prediction=0 %}"">View Tesla</a>
-        <form action="{% url 'logout' %}" method="post">
-          {% csrf_token %}
-          <button type="submit" class="basic_button">Log Out</button>
-        </form>
+        <h3>Hi {{ user.username }}!</h3>
+        <p>You have completed {{ count }} predictions. <br>
+        Your accuracy is {{ accuracy }}. </p>
+        <h4>Quick start</h3>
+        <p>To access predictions data, you need to make a prediction yourself. You will only be able to 
+          access predictions data for a stock, for a specific date, if you have cast a prediction for it 
+          on that date. To predict, do the following:
+        </p>
+        <ol>
+          <li>Click predictions.</li>
+          <li>Find a stock you want to predict.</li>
+          <li>Predict how much the stock will change.</li>
+          <li>Press submit.</li>
+        </ol>
+        
+        <div class="button_span">
+          <form action="{% url 'logout' %}" method="post" class="button_span">
+            {% csrf_token %}
+            <button type="submit" class="basic_button">Log Out</button>
+          </form>
+          <form action="{% url 'password_change' %}" method="post">
+            {% csrf_token %}
+            <button type="submit" class="basic_button">Change Password</button>
+          </form>
+        </div>
       </div>
     </div>
     <div class="col-3">

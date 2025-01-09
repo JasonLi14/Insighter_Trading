@@ -7,7 +7,7 @@ import plotly.figure_factory as ff
 from random import random  # For testing
 import numpy as np
 # My own libraries
-"""
+
 from . import get_data
 
 
@@ -31,26 +31,27 @@ def createStockGraph(ticker: str, period: int) -> str:
     # Embed the plot in an HTML div tag
     bar_plot_div: str = plot(bar_plot, output_type="div", config = {'staticPlot': True, 'responsive': True})
     return bar_plot_div, fast_info
-"""
+
 
 def createDistrGraph(data):
-    dataframe = pd.DataFrame({"predictions": data})
-
+    max_val = max(data)
     # Create distplot with curve_type set to 'normal'
-    dist_plot = px.histogram(dataframe, x="predictions")
+    dist_plot = ff.create_distplot([data], group_labels=["Predictions Data"], curve_type="normal", colors=['#065143'])
 
     # Add title
     dist_plot.update_layout({'plot_bgcolor': 'rgba(0, 0, 0, 0)', 
                              'paper_bgcolor': '#fff9f8', 
-                             "title_text": 'Distplot with Normal Distribution', },)
-    dist_plot.show()
+                             "title_text": 'Distribution of Predictions', 
+                             "showlegend": False,
+                             "xaxis_title": "Prediction Value ($)", 
+                             "yaxis_title":"Distribution"},)
+    # dist_plot.show()
+    dist_plot_div: str = plot(dist_plot, output_type="div", config = {'staticPlot': True, 'responsive': True})
+    return dist_plot_div
 
 
 if __name__ == "__main__":
     # createStockGraph("AAPL", 3)
-    data = [] 
-    for i in range(100):
-        data.append(random())
-    createDistrGraph(data)
+    createDistrGraph([10, 20, 50, 40, 60, 40, 30, 26, 36, 99, 93, 70])
 
     

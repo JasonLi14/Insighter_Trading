@@ -4,10 +4,22 @@
 {% block title %}Log In{% endblock %}
 
 {% block content %}
-<h2>Log In</h2>
-<form method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit">Log In</button>
-</form>
+<div style="width: 100%">
+  <div class="col-3"></div>
+  <div class="col-6">
+    <div class="generic_container user_form">
+      <form method="post">
+        <h2>Login</h2>
+        {% csrf_token %}
+        {{ form.as_div }}
+        <br>
+        <button type="submit" class="basic_button" style="margin: 0 auto; display: block">Login</button>
+        <br>
+        <p>Want to sign up instead? </p>
+        <a href="{% url 'signup' %}" class="basic_button" style="margin: 0 auto; display: block">Sign Up</a>
+      </form>
+    </div>
+  </div>
+  <div class="col-3"></div>
+</div>
 {% endblock %}

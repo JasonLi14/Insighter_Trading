@@ -273,3 +273,60 @@ tr:hover {
   color: white;
   background-color: var(--highlight-color);
 }
+
+/* Index */
+.get_started {
+  width: 50%; 
+  text-align: center; 
+  box-shadow: 0 0 15px var(--section-color);
+}
+
+/* Predictions List */
+.all_predictions {
+  table-layout: fixed;
+  width: 100%;
+  padding: 10px;
+}
+
+/* home page */
+.button_span {
+  display: flex; 
+  justify-content: center; 
+  padding: 15px;
+  width: 100%;
+  align-items: center;
+}
+
+.button_span form {
+  margin-right: 2.5%;
+  width: 25%;
+}
+
+.button_span button {
+  margin-right: 2.5%;
+  width: 100%;
+}
+
+.user_form div{
+  margin: 15px 0;
+  padding: 15px;
+  background-color: var(--interact-color);
+  border-radius: 15px;
+  width: 100%;
+}
+
+.user_form label {
+  font-weight: bold;
+}
+
+.user_form button[type="submit"], .user_form a {
+  width: 50%;
+}
+
+
+.user_form input[type="password"], .user_form input[type="text"] {
+  border: 0;
+  background-color: var(--bkg-color);
+  padding: 3px;
+  width: 100%;
+}

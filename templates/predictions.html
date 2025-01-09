@@ -20,7 +20,7 @@
             {% endfor %}
         </table>
         <br>
-        <a href="" class="basic_button">Past Predictions</a>
+        <a href="{% url 'view_predictions' %}" class="basic_button">Past Predictions</a>
     {% else %}
         <p>You have not made a prediction yet. Try getting started! </p>
     {% endif %}

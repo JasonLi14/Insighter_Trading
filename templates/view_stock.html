@@ -114,6 +114,20 @@
         </div>
       </div>
 
+      {% if distribution_plot %}
+      <br>
+      <div class="row">
+        <div class="col-2"></div>
+        <div class="col-8">{{ distribution_plot|safe }}</div>
+        <div class="col-2"></div>
+      </div>
+      <br>
+      {{ votes }} users have voted on {{ ticker }} on {{ chosen_date }}.
+      <br>
+      The Insighter Score for this stock is {{ insighter_score }}. 
+      <br>
+
+      {% else %}
       <form action="" method="post">
         {% csrf_token %}
         <h4>Make a Prediction!</h4>
@@ -130,7 +144,8 @@
         <p>Expected value of the stock: <b id="expected_value"></b></p>
         <input class="basic_button" type="submit" value="Submit">
       </form>
-
+      {% endif %}
+      
       {% else %}
       <p>Hmm... It seems that we cannot fetch data for this stock. Apologies for the inconvenience. </p>
       {% endif %}

@@ -1,0 +1,33 @@
+<!-- templates/home.html -->
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<div style="width: 100%">
+    <div class="col-12">
+      <div class="generic_container">
+        <p>View your predictions</p>
+        <table class="all_predictions">
+          <tr>
+            <th>Stock</th>
+            <th>Date Predicted</th>
+            <th>End date</th>
+            <th>Price Predicted</th>
+            <th>Completed</th>
+          </tr>
+          {% for prediction in predictions %}
+          <tr>
+            <td>{{prediction.ticker_id}}</td>
+            <td>{{prediction.predict_date}}</td>
+            <td>{{prediction.end_date}}</td>
+            <td>{{prediction.end_value}}</td>
+            <td>{{prediction.counted}}</td>
+          </tr>
+          {% endfor %}
+      </table>
+      </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -11,10 +11,12 @@ from django.http import HttpResponse, HttpRequest
 from django.http import HttpResponseRedirect  # For reloading
 from django.contrib.auth.decorators import login_required  # for pages that need logging in
 
+# changing password
+from django.contrib.auth.views import PasswordChangeView
+from django.contrib.auth.forms import PasswordChangeForm
+
 # For creating user
-from .forms import CustomUserCreationForm
-from .forms import predictionForm  # Our prediction form to create predictions
-from .forms import searchForm 
+from .forms import *
 
 # For error handling
 from django.db import IntegrityError
@@ -37,10 +39,17 @@ from .models import stocks
 # From our queries
 from . import queries
 
+# Authentication views
 class SignUpView(CreateView):
     form_class = CustomUserCreationForm
     success_url = reverse_lazy("login")
     template_name = "registration/signup.html"
+
+class ChangePasswordView(PasswordChangeView):
+    form_class = PasswordChangeForm
+    success_url = reverse_lazy("login")
+    template_name = "registration/password_change.html"
+
 
 @login_required(login_url='/accounts/login/')
 def viewStocks(request: HttpRequest, ticker, prediction):  # To view and predict stocks    
@@ -51,10 +60,13 @@ def viewStocks(request: HttpRequest, ticker, prediction):  # To view and predict
             'success': False,
             'ticker': ticker,
             'bar_plot': None,
+            'distribution_plot': None,
             'stock_info': None,
             'pred_dates': None,
             'chosen_date': prediction,
+            'insighter_score': 0,
             'form': None,
+            'votes': 0,
             'predictions_list': queries.userPredictions(request.user)}
     
     # Get data and catch errors with yfinance
@@ -85,12 +97,36 @@ def viewStocks(request: HttpRequest, ticker, prediction):  # To view and predict
         # user entered their own prediction date
         return HttpResponseRedirect("0")
 
-    # Make a distribution graph
-    # Change prediction values to floats
-    prediction_values = []
-    for value in allPredictions.objects.filter(ticker=ticker, end_date=prediction).values_list('end_value'):
-        prediction_values.append(float(value[0]))
-    distr_graph = graphing.createDistrGraph(prediction_values)
+    distr_graph = None
+    votes = 0
+    insighter_score = 0
+    # Check if the user predicted yet, otherwise distr_graph stays as none
+    if len(allPredictions.objects.filter(ticker=ticker, end_date=prediction, user=request.user).values()) > 0:
+        # Make a distribution graph
+        # Change prediction values to floats
+        prediction_values = []
+        query = allPredictions.objects.filter(ticker=ticker, end_date=prediction)
+        query_end_val = query.values_list('end_value')
+        votes = len(query_end_val)
+        for value in query_end_val:
+            prediction_values.append(float(value[0]))
+        print(prediction_values)
+        distr_graph = graphing.createDistrGraph(prediction_values)
+
+        # Calculate insighter score
+        accuracy_sum = 1
+        prediction_change_sum = 0
+        for prediction_obj in query:
+            user_accuracy = prediction_obj.user.accuracy
+            user_prediction = prediction_obj.end_value
+            prediction_change_sum += (float(user_prediction) - stock_info['lastPrice']) * float(user_accuracy)
+            # Absolute sum on bottom
+            accuracy_sum += abs(float(user_accuracy))
+        insighter_change = prediction_change_sum / accuracy_sum
+        insighter_score = insighter_change + stock_info['lastPrice']
+        insighter_score = "${:.2f}".format(insighter_score)
+            
+
 
     # Set the maximum of the range to be dynamic
     range_change = round(float(new_info["lastPrice"]) * 0.2 * 4) / 4
@@ -109,6 +145,8 @@ def viewStocks(request: HttpRequest, ticker, prediction):  # To view and predict
                      'stock_info': new_info,
                      'pred_dates': prediction_dates,
                      'chosen_date': prediction,
+                     'insighter_score': insighter_score,
+                     'votes': votes,
                      'predictions_list': queries.userPredictions(request.user)}
 
     # Processing prediction form
@@ -150,7 +188,10 @@ def viewStocks(request: HttpRequest, ticker, prediction):  # To view and predict
 @login_required(login_url='/accounts/login/')
 def home(request):  # Profile page
     template = loader.get_template("home.html")
-    context = {"user": request.user}
+    context = {"user": request.user,
+               'predictions_list': queries.userPredictions(request.user),
+               'accuracy': "{:.2f}".format(request.user.accuracy), 
+               'count': request.user.completed_predictions}
     return HttpResponse(template.render(context, request))
 
 
@@ -183,3 +224,12 @@ def stocksList(request, page_number:int, search:str="search="):
                    'search_form': searchForm}
 
         return HttpResponse(template.render(context, request))
+
+
+@login_required(login_url='/accounts/login/')
+def predictionsList(request):
+    template = loader.get_template("all_predictions.html")
+    context = {
+        "predictions": allPredictions.objects.filter(user=request.user).values() 
+    }
+    return HttpResponse(template.render(context, request))

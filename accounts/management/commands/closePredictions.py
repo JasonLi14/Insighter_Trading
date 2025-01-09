@@ -31,7 +31,6 @@ class Command(BaseCommand):
             # Find the time difference. More difference = more accuracy
             prediction_date = prediction.predict_date
             prediction_end = prediction.end_date
-            print(prediction_date, prediction_end)
             change = prediction_end - prediction_date
             days = change.days
             
